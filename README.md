@@ -49,7 +49,7 @@ self-host and fully own.
 - [ ] **Phase 4 — Competitor analysis**: ground the agent in competitor
       content, not just your own
 - [ ] **Phase 5 — Auth / multi-user**: so others can self-host this for
-      their own teams
+      their own teams 
 
 ## Getting started
 
