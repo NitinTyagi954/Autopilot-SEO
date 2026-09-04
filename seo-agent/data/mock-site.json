@@ -1,0 +1,47 @@
+{
+  "siteName": "Acme Analytics",
+  "pages": [
+    {
+      "type": "page",
+      "title": "Acme Analytics — Real-Time Business Dashboards",
+      "url": "/",
+      "keywords": ["business dashboards", "real-time analytics"]
+    },
+    {
+      "type": "page",
+      "title": "Pricing",
+      "url": "/pricing",
+      "keywords": ["analytics pricing", "dashboard software cost"]
+    }
+  ],
+  "posts": [
+    {
+      "type": "post",
+      "title": "5 KPIs Every SaaS Founder Should Track Weekly",
+      "url": "/blog/saas-kpis-weekly",
+      "primaryKeyword": "SaaS KPIs",
+      "publishedAt": "2026-05-02"
+    },
+    {
+      "type": "post",
+      "title": "How to Build a Real-Time Analytics Dashboard from Scratch",
+      "url": "/blog/build-realtime-dashboard",
+      "primaryKeyword": "real-time analytics dashboard",
+      "publishedAt": "2026-06-10"
+    },
+    {
+      "type": "post",
+      "title": "Customer Churn: How to Measure It and Why It Matters",
+      "url": "/blog/customer-churn-guide",
+      "primaryKeyword": "customer churn",
+      "publishedAt": "2026-07-01"
+    },
+    {
+      "type": "post",
+      "title": "A Beginner's Guide to Cohort Analysis",
+      "url": "/blog/cohort-analysis-guide",
+      "primaryKeyword": "cohort analysis",
+      "publishedAt": "2026-07-20"
+    }
+  ]
+}
