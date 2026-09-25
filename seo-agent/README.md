@@ -1,62 +1,99 @@
-# SEO Agent — Agentic Workflows Hackathon
+# Autopilot SEO — Initial Foundation Phase
 
-Takes a manually-written, finished blog post and generates a complete,
-verified SEO package for it (title tag, meta description, slug, keyword
-analysis, alt text, internal link suggestions, schema markup). Publishing
-stays 100% manual — this agent only handles the SEO layer.
+Autopilot SEO is an open-source, scalable SEO and content management platform built as a clean **modular monolith**.
 
-See `/PROBLEM_AND_SOLUTION.md` for the full problem statement and solution.
+---
 
-## Project structure
+## Tech Stack
 
+- **Frontend**: Next.js 15+ (App Router), TypeScript, Tailwind CSS, TipTap Rich Text Editor, Lucide Icons.
+- **Backend**: Python 3.11+, Django 5+, Django REST Framework (DRF), `django-cors-headers`.
+- **Database**: PostgreSQL 16 (with SQLite dev fallback).
+- **Containerization**: Docker & Docker Compose.
+
+---
+
+## Repository Structure
+
+```text
+autopilot-seo/
+├── client/                      # Next.js frontend application
+│   ├── app/
+│   │   ├── (admin)/             # Admin Dashboard, Sites, Posts, SEO, Media, etc.
+│   │   └── blog/                # Public blog archive and /blog/[slug] reader
+│   ├── components/
+│   │   ├── editor/              # TipTap rich text editor
+│   │   ├── seo/                 # SEO configuration & SERP preview component
+│   │   └── ui/                  # Reusable UI primitives
+│   ├── context/                 # Multi-site Context provider
+│   ├── lib/                     # Typed REST API client
+│   └── types/                   # TypeScript interfaces
+│
+├── server/                      # Django REST API modular monolith
+│   ├── config/                  # Django settings & routing
+│   ├── apps/
+│   │   ├── sites/               # Site domain model
+│   │   ├── posts/               # Post domain model & public endpoints
+│   │   ├── taxonomy/            # Category & Tag domain models
+│   │   ├── media/               # Media asset domain model
+│   │   └── seo/                 # Dedicated 1:1 PostSEO domain model
+│   └── manage.py
+│
+├── docs/
+│   └── architecture.md          # Architecture specs & future roadmap
+├── docker-compose.yml           # Multi-container orchestration (client, server, postgres)
+├── .env.example                 # Environment variable templates
+└── README.md
 ```
-seo-agent/
-├── data/
-│   └── mock-site.json        # mock CMS content: existing pages/posts (stand-in for real CMS API)
-├── memory/
-│   ├── store.js              # simple JSON-file memory: keywords/topics used so far
-│   └── memory-store.json     # the persisted memory file (created on first run)
-├── lib/
-│   └── geminiClient.js       # shared Gemini client wrapper (@google/generative-ai, gemini-2.5-flash)
-├── tools/
-│   └── siteContent.js        # "tool" the agent calls to fetch site context (reads data/mock-site.json)
-├── verification/
-│   └── rules.js              # rule-based checks the generated SEO output must pass
-├── baseline/
-│   └── baseline.js           # single-prompt baseline (no tools, no verification, no memory)
-├── agent.js                  # the actual agent: generate -> verify -> regenerate loop
-├── eval/
-│   ├── sample-posts/         # ~10 sample blog posts used for baseline vs. agent comparison
-│   ├── checklist.js          # scoring checklist applied to any SEO output
-│   └── run-eval.js           # runs baseline + agent on all sample posts, prints scores
-├── CHANGELOG.md              # improvement changelog (fill in as you iterate)
-├── .env.example
-└── package.json
-```
 
-## Setup
+---
+
+## Quick Start with Docker Compose
+
+To launch the full stack (PostgreSQL, Django API, Next.js frontend):
 
 ```bash
-npm install
+# 1. Copy environment template
 cp .env.example .env
-# add your GEMINI_API_KEY to .env
+
+# 2. Build and launch containers
+docker compose up --build
 ```
 
-## Run things
+- **Frontend Application**: [http://localhost:3000](http://localhost:3000)
+- **Django REST API**: [http://localhost:8000/api/v1/](http://localhost:8000/api/v1/)
+- **Admin Dashboard**: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
+- **Public Blog**: [http://localhost:3000/blog](http://localhost:3000/blog)
+
+---
+
+## Local Development (Without Docker)
+
+### Backend (Django)
 
 ```bash
-# run the baseline on one sample post
-node baseline/baseline.js eval/sample-posts/post-01.md
-
-# run the agent on one sample post
-node agent.js eval/sample-posts/post-01.md
-
-# run baseline vs. agent across all sample posts and print scores
-node eval/run-eval.js
+cd server
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py test apps
+python manage.py runserver 0.0.0.0:8000
 ```
 
-## Next steps (fill in as you build)
-- Replace `tools/siteContent.js` mock reads with a real CMS API call
-- Add more sample posts to `eval/sample-posts/`
-- Tune `verification/rules.js` thresholds to match your actual SEO standards
-- Log each meaningful change to `CHANGELOG.md` with before/after evidence
+### Frontend (Next.js)
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+---
+
+## Completed Vertical Slice Flow
+
+1. **Create Website**: Navigate to `/sites` to create and select a site entity.
+2. **Write Rich Post**: Open `/posts/new` to compose structured content with TipTap.
+3. **Configure SEO**: Set focus keyword, SERP title, meta description, and social tags.
+4. **Draft vs. Publish**:
+   - Save as `Draft`: Viewable only in admin, returns `404` publicly on `/blog/[slug]`.
+   - Click `Publish`: Post goes live on `/blog/[slug]` with SSR and meta tag tags.
