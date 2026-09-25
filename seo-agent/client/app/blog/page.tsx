@@ -86,7 +86,7 @@ export default async function PublicBlogListPage() {
                 <div className="p-8 sm:p-10 space-y-4">
                   <div className="flex flex-wrap items-center gap-2.5">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 px-2.5 py-1 rounded-md">
-                      Featured • {featuredPost.category?.name || 'General'}
+                      Featured • {featuredPost.category_detail?.name || 'General'}
                     </span>
                     <span className="text-xs text-slate-400">•</span>
                     <span className="text-xs text-slate-400">{formatDate(featuredPost.published_at || featuredPost.created_at)}</span>
@@ -132,7 +132,7 @@ export default async function PublicBlogListPage() {
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2.5">
                         <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                          {post.category?.name || 'Article'}
+                          {post.category_detail?.name || 'Article'}
                         </span>
                         <span className="text-xs text-slate-400">{formatDate(post.published_at || post.created_at)}</span>
                       </div>

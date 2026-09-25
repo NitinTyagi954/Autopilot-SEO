@@ -103,8 +103,11 @@ export default async function PublicPostPage({ params }: Props) {
         <div className="prose dark:prose-invert max-w-none text-slate-800 dark:text-slate-200 leading-relaxed text-base sm:text-lg">
           {post.content.content.map((block: any, i: number) => {
             if (block.type === 'heading') {
-              const Tag = `h${block.attrs?.level || 2}` as keyof JSX.IntrinsicElements;
-              return <Tag key={i} className="font-bold text-xl my-4 text-slate-900 dark:text-slate-100">{block.content?.[0]?.text}</Tag>;
+              const text = block.content?.[0]?.text || '';
+              const level = block.attrs?.level;
+              if (level === 1) return <h1 key={i} className="font-black text-2xl my-4 text-slate-900 dark:text-slate-100">{text}</h1>;
+              if (level === 3) return <h3 key={i} className="font-bold text-lg my-3 text-slate-900 dark:text-slate-100">{text}</h3>;
+              return <h2 key={i} className="font-bold text-xl my-4 text-slate-900 dark:text-slate-100">{text}</h2>;
             }
             if (block.type === 'paragraph') {
               return <p key={i} className="my-3">{block.content?.map((c: any) => c.text).join('')}</p>;

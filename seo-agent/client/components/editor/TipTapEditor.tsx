@@ -67,20 +67,22 @@ export function TipTapEditor({ content, onChange, editable = true }: TipTapEdito
   const readTimeMin = Math.max(1, Math.ceil(wordCount / 200));
 
   const setLink = () => {
-    const previousUrl = editor.getAttributes('link').href;
+    const previousUrl = editor.getAttributes('link')?.href;
     const url = window.prompt('Enter target URL:', previousUrl);
 
     if (url === null) {
       return;
     }
 
+    const chain = editor.chain().focus().extendMarkRange('link') as any;
     if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      if (chain.unsetLink) chain.unsetLink().run();
       return;
     }
 
-    // Set link via HTML insertion if Link extension isn't in StarterKit
-    editor.chain().focus().extendMarkRange('link').setLink?.({ href: url }).run();
+    if (chain.setLink) {
+      chain.setLink({ href: url }).run();
+    }
   };
 
   const insertImage = (e: React.FormEvent) => {
